@@ -1,0 +1,108 @@
+
+For this assignment you should work with your lab partners. All students must submit the code and you must put the names of all teammates in comments at the top every code file.
+
+In this assignment we will play a guessing game (somewhat similar to 20 questions), with the computer doing the guessing—and learning at the same time. In the sample below, the human’s responses are shown in red.
+
+The game begins:
+Welcome to the Guessing Game!
+When the game begins, our data only contains the elephant node. So the computer immediately asks if the human are thinking of an elephant.
+Shall we play a game? (y/n) y
+Are you thinking of a elephant? (y/n) y
+I win!
+Here the human is thinking of a cow, so the computer asks for a question that distinguishes between an elephant and a cow. In this way, the computer learns and gets smarter as is plays.
+Shall we play a game? (y/n) y
+Are you thinking of a elephant? (y/n) n
+You win!
+What are you thinking of? cow
+What question separates a elephant from a cow? Does it moo?
+Is cow correct when the answer to "Does it moo?" is yes? (y/n) y
+The computer now knows a question and two possible answers. So it starts with the question "Does it Moo?" When the human answers "yes", The computer guesses "Cow". When the human confirms the guess, the computer has successfully guessed the animal.
+Shall we play a game? (y/n) y
+Does it moo? (y/n) y
+Are you thinking of a cow? (y/n) y
+I win!
+In another round, the user is thinking of a Gnat and the computer must grow its knowledge again.
+Shall we play a game? (y/n) y
+Does it moo? (y/n) n
+Are you thinking of a elephant? (y/n) n
+You win!
+What are you thinking of? gnat
+What question separates a elephant from a gnat? Is it bigger than a breadbox?
+Is gnat correct when the answer to "Is it bigger than a breadbox?" is yes? (y/n) n
+And again, the computer learns about another animal.
+Shall we play a game? (y/n) y
+Does it moo? (y/n) n
+Is it bigger than a breadbox? (y/n) y
+Are you thinking of a elephant? (y/n) n
+You win!
+What are you thinking of? whale
+What question separates a elephant from a whale? Does it live in water?
+Is whale correct when the answer to "Does it live in water?" is yes? (y/n) y
+
+ Shall we play a game? (y/n) n
+The Task
+For this assignment you will construct a Questions Game that learns new questions and answers and arranges them in a decision tree data structure.
+
+Create a class called GuessingGame that implements the Game  Download Gameinterface to contain the main logic of your program.
+The main method in your GuessingGame class should accept a single command line argument that is the filename (including extension) that should be loaded as the decision tree. Additionally, your GuessingGame class should have a constructor with a single argument as follows:
+public GuessingGame( String filename )
+Implement a class called LinkedBinaryTreeNode, a linked version of the BinaryTreeNode Download BinaryTreeNode interface to construct the nodes of your tree. Subclass LinkedBinaryTreeNode to create classes Question and Guess, which are specialize nodes. Question nodes should contain yes-no questions and are always interior nodes. Guess nodes contain guesses and are always leaf nodes. All nodes should have a toString method to aid in debugging.
+A LinkedBinaryTreeNode should minimally have a constructor with a single argument as follows:
+public LinkedBinaryTreeNode( E data )
+Use the Question and Guess nodes to construct a tree in your GuessingGame class.
+Grow your tree as the game is played.
+Save you tree in a file called tree.data when the game exits.
+Program Design
+The program maintains a binary tree whose internal nodes are type Question and whose leaves are type Guess. The left and right children of an internal node correspond to the responses “no” and “yes” (left being no and right be yes). When the program makes a wrong guess, it collects enough information to create a new node. The original leaf (the one with a wrong guess) is replaced by a new internal node that contains a new question and whose children are the old wrong guess and the new correct guess.
+
+Notice that the tree has the property that a node is either a leaf or has two children. That property makes it easy to distinguish guesses from questions. It also allows us to store trees as text files, with the nodes listed in preorder. Here is a picture and the corresponding textual representation of a simple tree:
+
+QuestionAnswerTree.png
+Q:Does it moo?
+Q:Is it bigger than a breadbox?
+G:gnat
+Q:Does it live in water?
+G:elephant
+G:whale
+G:cow
+The lines in the file follow a preorder traversal of the tree. In the data file, a question is prefixed by  "Q:" and a guess by "G:". Do not specify empty trees in the file as they do not provide useful information. The shortest possible file has one line, a guess.
+
+BinaryTreeNode
+Develop a class LinkedBinaryTreeNode by implementing BinaryTreeNode.java Download BinaryTreeNode.java, shown below. Then extend LinkedBinaryTreeNode to create specialized nodes for Question and Guess.
+
+
+The following files contain sample data:
+
+tree1.png
+tree2.png
+tree3.png
+tree4.png
+tree5.png
+Source and Data
+Source Files
+
+BinaryTreeNode.javaDownload BinaryTreeNode.java
+Game.javaDownload Game.java
+TreeDisplay.javaDownload TreeDisplay.java
+TreeDisplayPanel.javaDownload TreeDisplayPanel.java
+LinkedBinaryTreeNodeTest.javaDownload LinkedBinaryTreeNodeTest.java
+Data Files
+
+
+Additional Requirements
+Make a large data file with over 64 nodes.
+Connect TreeDisplay to your GuessingGame class. Launch a visualization of the tree created by the data file when it is loaded.
+Extra Credit
+500 points. Make a second game class called GuessingGameFx that launches a JavaFX user interface for the game.
+Scoring
+You will receive points as follows:
+
+100 points if you made a legitimate attempt to to solve the problem and your code compiles without errors or warnings.
+300 points if the LinkedBinaryTreeNode class works according to spec.
+100 points for implementing the Question and Guess nodes according to spec and using them in your GuessingGame class.
+350 points if the GuessingGame class works according to spec.
+50 points for style based on the Programming Style Guidelines
+150 points, make a large data file with over 64 nodes.
+200 points, connect TreeDisplay to your GuessingGame class. Launch a visualization of the tree created by the data file when it is loaded.
+ Submission
+Submit your GuessingGame.java, LinkedBinaryTreeNode.java, Question.java, Guess.java and any other classes developed, and your tree.data file to Canvas.
