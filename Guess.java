@@ -1,2 +1,6 @@
-public class Guess extends LinkedBinaryTreeNode{
+public class Guess<E> extends LinkedBinaryTreeNode<E>{
+    public Guess(E guess){
+        rootNode = new LinkedBinaryTreeNode();
+        data = guess;
+    }
 }

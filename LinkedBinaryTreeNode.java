@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class LinkedBinaryTreeNode<E> implements BinaryTreeNode<E>{
     BinaryTreeNode rootNode = null;
@@ -78,31 +80,49 @@ public class LinkedBinaryTreeNode<E> implements BinaryTreeNode<E>{
     }
 
     @Override
-    public int getDepth() {
-        BinaryTreeNode curNode = rootNode;
-        int depth = 0;
-        while(curNode.getParent() != null){
-            curNode = curNode.getParent();
-            depth++;
+    public int getDepth() {return getDepth(0,rootNode);}
+    public int getDepth(int i, BinaryTreeNode node){
+        if (node == null)
+            return i;
+        else {
+            int lDepth = getDepth(i+1,node.getLeft());
+            int rDepth = getDepth(i+1,node.getRight());
+            if (lDepth > rDepth)
+                return (lDepth + 1);
+            else
+                return (rDepth + 1);
         }
-        return depth;
     }
 
     @Override
     public int getHeight() {
-        return getHeight(0,rootNode);
+        return getHeight(rootNode);
     }
-    public int getHeight(int i, BinaryTreeNode curNode){
-        if(curNode.hasLeftChild()){
-            return getHeight(i+1, curNode.getLeft());
+    public int getHeight(BinaryTreeNode root){
+        int depth = 0;
+
+        Queue<BinaryTreeNode> q = new LinkedList<>();
+        q.add(root);
+        q.add(null);
+        while (!q.isEmpty()) {
+            BinaryTreeNode temp = q.peek();
+            q.remove();
+            if (temp == null) {
+                depth++;
+            }
+            if (temp != null) {
+                if (temp.getLeft() != null) {
+                    q.add(temp.getLeft());
+                }
+                if (temp.getRight() != null) {
+                    q.add(temp.getRight());
+                }
+            }
+            else if (!q.isEmpty()) {
+                q.add(null);
+            }
         }
-        if(curNode.hasRightChild()){
-            return getHeight(i+1, curNode.getRight());
-        }
-        if(!curNode.hasLeftChild() && !curNode.hasRightChild()){
-            return i;
-        }
-        return -1;
+        return depth;
     }
 
     public ArrayList<BinaryTreeNode> search(BinaryTreeNode searchNode){
