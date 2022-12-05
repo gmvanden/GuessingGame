@@ -13,9 +13,9 @@ Here the human is thinking of a cow, so the computer asks for a question that di
 Shall we play a game? (y/n) y
 Are you thinking of a elephant? (y/n) n
 You win!
-What are you thinking of? cow
-What question separates a elephant from a cow? Does it moo?
-Is cow correct when the answer to "Does it moo?" is yes? (y/n) y
+What are you thinking of? *cow*
+What question separates a elephant from a cow? *Does it moo?*
+Is cow correct when the answer to "Does it moo?" is yes? (y/n) *y*
 The computer now knows a question and two possible answers. So it starts with the question "Does it Moo?" When the human answers "yes", The computer guesses "Cow". When the human confirms the guess, the computer has successfully guessed the animal.
 Shall we play a game? (y/n) y
 Does it moo? (y/n) y
@@ -27,7 +27,7 @@ Does it moo? (y/n) n
 Are you thinking of a elephant? (y/n) n
 You win!
 What are you thinking of? gnat
-What question separates a elephant from a gnat? Is it bigger than a breadbox?
+What question separates a elephant from a gnat? *Is it bigger than a breadbox?*
 Is gnat correct when the answer to "Is it bigger than a breadbox?" is yes? (y/n) n
 And again, the computer learns about another animal.
 Shall we play a game? (y/n) y

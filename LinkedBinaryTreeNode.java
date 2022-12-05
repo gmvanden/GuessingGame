@@ -2,52 +2,31 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
+@SuppressWarnings("ALL")
 public class LinkedBinaryTreeNode<E> implements BinaryTreeNode<E>{
     BinaryTreeNode rootNode = null;
     BinaryTreeNode parentNode = null;
     BinaryTreeNode leftNode = null;
     BinaryTreeNode rightNode = null;
-
     E data = null;
     @Override
-    public E getData() {
-        return data;
-    }
-
+    public E getData() {return data;}
     @Override
-    public void setData(E data) {
-        this.data = data;
-    }
-
+    public void setData(E data) {this.data = data;}
     @Override
-    public BinaryTreeNode getRoot() {
-        return rootNode;
-    }
-
+    public BinaryTreeNode getRoot() {return rootNode;}
     @Override
-    public BinaryTreeNode getParent() {
-        return parentNode;
-    }
-
+    public BinaryTreeNode getParent() {return parentNode;}
     @Override
     public void setParent(BinaryTreeNode parent) { parentNode = parent;}
-
     @Override
-    public BinaryTreeNode getLeft() {
-        return leftNode;
-    }
-
+    public BinaryTreeNode getLeft() {return leftNode;}
     @Override
     public void setLeft(BinaryTreeNode child) { leftNode = child; }
-
     @Override
-    public BinaryTreeNode getRight() {
-        return rightNode;
-    }
-
+    public BinaryTreeNode getRight() {return rightNode;}
     @Override
     public void setRight(BinaryTreeNode child) { rightNode = child; }
-
     @Override
     public boolean isParent() {
         if ((rootNode.hasLeftChild() || rootNode.hasRightChild())) {
@@ -62,7 +41,6 @@ public class LinkedBinaryTreeNode<E> implements BinaryTreeNode<E>{
         }
         return false;
     }
-
     @Override
     public boolean hasLeftChild() {
         if(rootNode.getLeft() != null){
@@ -70,7 +48,6 @@ public class LinkedBinaryTreeNode<E> implements BinaryTreeNode<E>{
         }
         return false;
     }
-
     @Override
     public boolean hasRightChild() {
         if(rootNode.getRight() != null){
@@ -78,7 +55,6 @@ public class LinkedBinaryTreeNode<E> implements BinaryTreeNode<E>{
         }
         return false;
     }
-
     @Override
     public int getDepth() {return getDepth(0,rootNode);}
     public int getDepth(int i, BinaryTreeNode node){
@@ -93,7 +69,6 @@ public class LinkedBinaryTreeNode<E> implements BinaryTreeNode<E>{
                 return (rDepth + 1);
         }
     }
-
     @Override
     public int getHeight() {
         return getHeight(rootNode);
@@ -124,7 +99,6 @@ public class LinkedBinaryTreeNode<E> implements BinaryTreeNode<E>{
         }
         return depth;
     }
-
     public ArrayList<BinaryTreeNode> search(BinaryTreeNode searchNode){
         ArrayList<BinaryTreeNode> path = new ArrayList<>();
         BinaryTreeNode curNode = rootNode;
@@ -143,7 +117,6 @@ public class LinkedBinaryTreeNode<E> implements BinaryTreeNode<E>{
         search(curNode.getRight());
         return null;
     }
-
     @Override
     public int size() {
         if(rootNode==null){
@@ -162,41 +135,93 @@ public class LinkedBinaryTreeNode<E> implements BinaryTreeNode<E>{
         if (rootNode.isParent()){
             return;
         }
-
+        setChildrenNull(rootNode);
+        rootNode=null;
     }
-
+    public void setChildrenNull(BinaryTreeNode node){
+        if(node.hasLeftChild())
+            node.getLeft();
+        if(node.hasRightChild())
+            setChildrenNull(node.getRight());
+        node = null;
+    }
     @Override
     public ArrayList<BinaryTreeNode> pathTo(BinaryTreeNode descendant) {
         //give the search method a start (rootnode) and an end (descendant)
-        ArrayList<BinaryTreeNode> descendantNodes = new ArrayList<>();
-
-        return descendantNodes;
+        return search(descendant);
     }
-
     @Override
     public ArrayList<BinaryTreeNode> pathFrom(BinaryTreeNode ancestor) {
         //give the search method a start (ancestor) and an end (rootnode)
-        return null;
+        BinaryTreeNode tempNode1 = rootNode;
+        rootNode = ancestor;
+        ArrayList<BinaryTreeNode> pathToReturn = search(tempNode1);
+        rootNode = tempNode1;
+        return pathToReturn;
     }
-
     @Override
     public void traversePreorder(Visitor visitor) {
+        /*Visit n
+        for each child c of n
+        Preorder(c)*/
+
+        visitor.visit(rootNode);
+        if (rootNode.getLeft() != null){
+            traversePreorder(visitor, rootNode.getLeft());
+        }
+        if (rootNode.getRight() != null){
+            traversePreorder(visitor,rootNode.getRight());
+        }
 
     }
+    public void traversePreorder(Visitor visitor, BinaryTreeNode curNode) {
+        /*Visit n
+        for each child c of n
+        Preorder(c)*/
 
+        if (rootNode.getLeft() != null){
+            traversePreorder(visitor, curNode.getLeft());
+        }
+        if (rootNode.getRight() != null){
+            traversePreorder(visitor,curNode.getRight());
+        }
+
+    }
     @Override
     public void traversePostorder(Visitor visitor) {
-
+        if (rootNode.getLeft() != null){
+            traversePostorder(visitor, rootNode.getLeft());
+        }
+        if (rootNode.getRight() != null){
+            traversePostorder(visitor,rootNode.getRight());
+        }
+        visitor.visit(rootNode);
     }
-
+    public void traversePostorder(Visitor visitor, BinaryTreeNode curNode) {
+        //if (curNode == null) return; //need this?
+        if (curNode.getLeft() != null){
+            traversePostorder(visitor, curNode.getLeft());
+        }
+        if (curNode.getRight() != null){
+            traversePostorder(visitor,curNode.getRight());
+        }
+    }
     @Override
     public void traverseInorder(Visitor visitor) {
-        //if(rootNode == null) return null;
-        //traverseInorder(rootNode.getLeft());
-        // just commented out because errors cringe fix it later
-
+        if (rootNode.getLeft() != null){
+            traversePostorder(visitor, rootNode.getLeft());
+        }
+        visitor.visit(rootNode);
+        if (rootNode.getRight() != null){
+            traversePostorder(visitor,rootNode.getRight());
+        }
     }
-
-
-
+    public void traverseInorder(Visitor visitor, BinaryTreeNode curNode) {
+        if (curNode.getLeft() != null){
+            traverseInorder(visitor, curNode.getLeft());
+        }
+        if (curNode.getRight() != null){
+            traverseInorder(visitor,curNode.getRight());
+        }
+    }
 }
