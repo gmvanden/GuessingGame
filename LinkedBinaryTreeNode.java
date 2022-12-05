@@ -1,18 +1,20 @@
 import java.util.ArrayList;
 
-public class LinkedBinaryTreeNode implements BinaryTreeNode{
+public class LinkedBinaryTreeNode<E> implements BinaryTreeNode<E>{
     BinaryTreeNode rootNode = null;
     BinaryTreeNode parentNode = null;
     BinaryTreeNode leftNode = null;
     BinaryTreeNode rightNode = null;
+
+    E data = null;
     @Override
-    public Object getData() {
-        return null;
+    public E getData() {
+        return data;
     }
 
     @Override
-    public void setData(Object data) {
-
+    public void setData(E data) {
+        this.data = data;
     }
 
     @Override
@@ -77,13 +79,49 @@ public class LinkedBinaryTreeNode implements BinaryTreeNode{
 
     @Override
     public int getDepth() {
-        if (rootNode == null) return -1;
-        else return 1;
+        BinaryTreeNode curNode = rootNode;
+        int depth = 0;
+        while(curNode.getParent() != null){
+            curNode = curNode.getParent();
+            depth++;
+        }
+        return depth;
     }
 
     @Override
     public int getHeight() {
+        return getHeight(0,rootNode);
+    }
+    public int getHeight(int i, BinaryTreeNode curNode){
+        if(curNode.hasLeftChild()){
+            return getHeight(i+1, curNode.getLeft());
+        }
+        if(curNode.hasRightChild()){
+            return getHeight(i+1, curNode.getRight());
+        }
+        if(!curNode.hasLeftChild() && !curNode.hasRightChild()){
+            return i;
+        }
         return -1;
+    }
+
+    public ArrayList<BinaryTreeNode> search(BinaryTreeNode searchNode){
+        ArrayList<BinaryTreeNode> path = new ArrayList<>();
+        BinaryTreeNode curNode = rootNode;
+        if(curNode.getLeft() == searchNode || curNode.getRight() == searchNode){
+            path.add(curNode);
+            return path;
+        }
+        if(curNode.getLeft() == null){
+            search(curNode.getRight());
+        }if(curNode.getRight() == null){
+            search(curNode.getLeft());
+        }if(curNode.getLeft() == null && curNode.getRight() == null){
+            return null;
+        }
+        search(curNode.getLeft());
+        search(curNode.getRight());
+        return null;
     }
 
     @Override
@@ -101,11 +139,15 @@ public class LinkedBinaryTreeNode implements BinaryTreeNode{
     }
     @Override
     public void removeFromParent() {
+        if (rootNode.isParent()){
+            return;
+        }
 
     }
 
     @Override
     public ArrayList<BinaryTreeNode> pathTo(BinaryTreeNode descendant) {
+        //give the search method a start (rootnode) and an end (descendant)
         ArrayList<BinaryTreeNode> descendantNodes = new ArrayList<>();
 
         return descendantNodes;
@@ -113,6 +155,7 @@ public class LinkedBinaryTreeNode implements BinaryTreeNode{
 
     @Override
     public ArrayList<BinaryTreeNode> pathFrom(BinaryTreeNode ancestor) {
+        //give the search method a start (ancestor) and an end (rootnode)
         return null;
     }
 
@@ -128,6 +171,12 @@ public class LinkedBinaryTreeNode implements BinaryTreeNode{
 
     @Override
     public void traverseInorder(Visitor visitor) {
+        //if(rootNode == null) return null;
+        //traverseInorder(rootNode.getLeft());
+        // just commented out because errors cringe fix it later
 
     }
+
+
+
 }
