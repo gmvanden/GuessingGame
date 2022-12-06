@@ -7,7 +7,7 @@ public class Testing {
         Guess rock = new Guess("ROCK");
         Guess gnat = new Guess("Gnat");
         Guess shoestring = new Guess("shoestring");
-        Question isAnimal = new Question<>("is it an animal?", cow, rock);
+        Question isAnimal = new Question<>("is it an animal?");
 
         cow.setParent(isAnimal);
         rock.setParent(isAnimal);
@@ -18,5 +18,8 @@ public class Testing {
         System.out.println(cow.getParent().getData());
         System.out.println(cow.getData());
         System.out.println(isAnimal.getData());
+
+        GuessingGame game = new GuessingGame("fileName");
+        game.play();
     }
 }
