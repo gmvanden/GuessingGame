@@ -22,15 +22,13 @@ public class GuessingGame implements Game{
             while(fIn.hasNext()){
                 String Line = fIn.nextLine();
                 if(Line.charAt(0) == 'Q'){
-                    String nodeName = Line.substring(2,Line.length());
-                    LinkedBinaryTreeNode<String> node = new Question<>(nodeName);
-                    //set left and right nodes if they are not null
+                    //String nodeName = Line.substring(2,Line.length());
+                    LinkedBinaryTreeNode<String> node = new Question<>(Line);
                     tree.add(node);
                 }
                 if(Line.charAt(0) == 'G'){
-                    String nodeName = Line.substring(2,Line.length());
-                    LinkedBinaryTreeNode<String> node = new Guess<>(nodeName);
-                    //set left and right nodes if they are not null
+                    //String nodeName = Line.substring(2,Line.length());
+                    LinkedBinaryTreeNode<String> node = new Guess<>(Line);
                     tree.add(node);
                 }
             }
@@ -90,7 +88,7 @@ public class GuessingGame implements Game{
                     }
                 }
                 //output question
-                System.out.println(tree.get(iterativeI).getData().toString());
+                System.out.println(tree.get(iterativeI).getData().toString()+"(y/n)");
                 //input answer
                 String response = in.nextLine();
                 //evaluate answer
