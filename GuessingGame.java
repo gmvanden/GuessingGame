@@ -1,3 +1,8 @@
+/**
+ * @Auhtors Grace, Casen, Kam, Jake
+ * @Date 12/7/2022
+ * This Class runs the main program where the GuessingGame takes place asking the questions and answer them
+ */
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -57,7 +62,7 @@ public class GuessingGame implements Game{
 
     @Override
     public void play() { //do this third
-        System.out.println("Welcome to the guessing game!\nShall we play a game?(y/n)");
+        System.out.println("Welcome to the Guessing Game!\nShall we play a game?(y/n)");
         Scanner in = new Scanner(System.in);
         Boolean playing = true;
         Boolean Questioning = true;

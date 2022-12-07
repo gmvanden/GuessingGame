@@ -1,3 +1,8 @@
+/**
+ * @Auhtors Grace, Casen, Kam, Jake
+ * @Date 12/7/2022
+ * This class builds the dataset of the Guessing Game linkedBinaryTree
+ */
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
