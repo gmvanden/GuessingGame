@@ -41,7 +41,7 @@ public class LinkedBinaryTreeNode<E> implements BinaryTreeNode<E>{
     }
     @Override
     public boolean isLeaf() {
-        if (!(rootNode.hasLeftChild() || rootNode.hasRightChild())) {
+        if (leftNode == null || rightNode == null) {
             return true;
         }
         return false;

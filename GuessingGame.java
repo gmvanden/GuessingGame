@@ -16,17 +16,25 @@ public class GuessingGame implements Game{
         try{
             File file = new File(filename);
             Scanner fIn = new Scanner(file);
+            int i = 0;
+            Boolean isFirst = true;
             while(fIn.hasNext()){
                 String Line = fIn.nextLine();
                 if(Line.charAt(0) == 'Q'){
-                    //String nodeName = Line.substring(2,Line.length());
                     LinkedBinaryTreeNode<String> node = new Question<>(Line);
+
+                    if(isFirst == false){
+                        node.setParent(tree.get(i));
+                        i++;
+                    }
                     tree.add(node);
+                    isFirst = false;
                 }
                 if(Line.charAt(0) == 'G'){
-                    //String nodeName = Line.substring(2,Line.length());
                     LinkedBinaryTreeNode<String> node = new Guess<>(Line);
+                    node.setParent(tree.get(i));
                     tree.add(node);
+                    i++;
                 }
             }
 
@@ -125,6 +133,7 @@ public class GuessingGame implements Game{
 
             //save tree
             System.out.println("would you like to play again?(y/n)\n"); // make sure this is always the last thing to run
+            saveTree(fileName);
             if(in.nextLine().contains("n")){
                 playing=false;
                 break;
