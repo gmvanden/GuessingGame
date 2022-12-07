@@ -166,31 +166,22 @@ public class LinkedBinaryTreeNode<E> implements BinaryTreeNode<E>{
     }
     @Override
     public void traversePreorder(Visitor visitor) {
-        /*Visit n
-        for each child c of n
-        Preorder(c)*/
-
         visitor.visit(rootNode);
-        if (rootNode.getLeft() != null){
-            traversePreorder(visitor, rootNode.getLeft());
-        }
         if (rootNode.getRight() != null){
             traversePreorder(visitor,rootNode.getRight());
+        }
+        if (rootNode.getLeft() != null){
+            traversePreorder(visitor, rootNode.getLeft());
         }
 
     }
     public void traversePreorder(Visitor visitor, BinaryTreeNode curNode) {
-        /*Visit n
-        for each child c of n
-        Preorder(c)*/
-
-        if (rootNode.getLeft() != null){
-            traversePreorder(visitor, curNode.getLeft());
-        }
         if (rootNode.getRight() != null){
             traversePreorder(visitor,curNode.getRight());
         }
-
+        if (rootNode.getLeft() != null){
+            traversePreorder(visitor, curNode.getLeft());
+        }
     }
     @Override
     public void traversePostorder(Visitor visitor) {

@@ -3,7 +3,7 @@ import java.util.Objects;
 public class Testing {
 
     public static void main(String[] args) {
-        Guess cow = new Guess("cow");
+/*      Guess cow = new Guess("cow");
         Guess rock = new Guess("ROCK");
         Guess gnat = new Guess("Gnat");
         Guess shoestring = new Guess("shoestring");
@@ -17,9 +17,9 @@ public class Testing {
         System.out.println(isAnimal.getHeight());
         System.out.println(cow.getParent().getData());
         System.out.println(cow.getData());
-        System.out.println(isAnimal.getData());
+        System.out.println(isAnimal.getData());*/
 
-        GuessingGame game = new GuessingGame("fileName");
-        game.play();
+        //GuessingGame game = new GuessingGame("tree3.data");
+        //game.play();
     }
 }
