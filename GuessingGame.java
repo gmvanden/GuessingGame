@@ -20,30 +20,39 @@ public class GuessingGame implements Game{
             Boolean isFirst = true;
             while(fIn.hasNext()){
                 String Line = fIn.nextLine();
-                if(Line.charAt(0) == 'Q'){
-                    LinkedBinaryTreeNode<String> node = new Question<>(Line);
-
-                    if(isFirst == false){
-                        node.setParent(tree.get(i));
+                LinkedBinaryTreeNode<String> node = null;
+                if(Line.charAt(0)=='Q'){
+                    node = new Question<>(Line);
+                }
+                if(Line.charAt(0)=='G'){
+                    node = new Guess<>(Line);
+                }
+                tree.add(node);
+                if(isFirst == false){
+                    node.setParent(tree.get(i));
+                    if(Line.charAt(0) == 'G'){
+                        if (tree.get(i).rightNode == null) {
+                            tree.get(i).setRight(node);
+                        } else {
+                            tree.get(i).setLeft(node);
+                            if(!(tree.get(i).getParent() == null)){
+                                i--;
+                            }
+                        }
+                    }else{
+                        tree.get(i).setRight(node);
                         i++;
                     }
-                    tree.add(node);
-                    isFirst = false;
+
                 }
-                if(Line.charAt(0) == 'G'){
-                    LinkedBinaryTreeNode<String> node = new Guess<>(Line);
-                    node.setParent(tree.get(i));
-                    tree.add(node);
-                    i++;
-                }
+                isFirst = false;
+
             }
 
 
         }catch (FileNotFoundException e){
             e.printStackTrace();
             System.out.println("file name incorrect or file not found");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
 
         return null; // return root node
