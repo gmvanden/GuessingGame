@@ -19,7 +19,7 @@ public class Testing {
         System.out.println(cow.getData());
         System.out.println(isAnimal.getData());*/
 
-        GuessingGame game = new GuessingGame("tree6.data");
+        GuessingGame game = new GuessingGame("tree3.data");
         //game.loadTree("tree3.data");
         /*System.out.println(game.tree.get(0).getData().toString());
         System.out.println(game.tree.get(1).getData().toString());

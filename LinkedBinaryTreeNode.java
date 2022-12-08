@@ -173,7 +173,6 @@ public class LinkedBinaryTreeNode<E> implements BinaryTreeNode<E>{
         if (rootNode.getLeft() != null){
             traversePreorder(visitor, rootNode.getLeft());
         }
-
     }
     public void traversePreorder(Visitor visitor, BinaryTreeNode curNode) {
         if (rootNode.getRight() != null){
@@ -219,5 +218,15 @@ public class LinkedBinaryTreeNode<E> implements BinaryTreeNode<E>{
         if (curNode.getRight() != null){
             traverseInorder(visitor,curNode.getRight());
         }
+    }
+    public int countNode(BinaryTreeNode root){
+
+        //base case
+        if(root==null)
+            return 0;
+
+        //recursive call to left child and right child and
+        // add the result of these with 1 ( 1 for counting the root)
+        return 1 + countNode(root.getLeft()) + countNode(root.getRight());
     }
 }

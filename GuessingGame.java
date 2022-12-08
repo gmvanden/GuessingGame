@@ -9,6 +9,7 @@ import java.util.Scanner;
 @SuppressWarnings("ALL")
 public class GuessingGame implements Game{
     ArrayList<LinkedBinaryTreeNode> tree = new ArrayList<>();
+    ArrayList<LinkedBinaryTreeNode> secondaryTree = new ArrayList<>();
     String fileName = null;
     @Override
     public BinaryTreeNode<String> loadTree(String filename) { //do this first
@@ -57,7 +58,6 @@ public class GuessingGame implements Game{
 
         return null; // return root node
     }
-
     @Override
     public void saveTree(String filename) { // do this last
         //PREORDER
@@ -66,10 +66,16 @@ public class GuessingGame implements Game{
             FileWriter myWriter = new FileWriter(fileName);
             String fileContents = "";
             myWriter.flush();
+
+            //start at rootof tree(0), go recursively right, then left
+            preorderArrayFill(tree.get(0));
+            //tree=secondaryTree;
+
             //traverse through tree and add each .data to a String
             for (LinkedBinaryTreeNode node:tree) {
                 fileContents = fileContents+ node.getData().toString()+"\n";
             }
+
             myWriter.write(fileContents);
             myWriter.close();
             tree.clear();
@@ -78,6 +84,21 @@ public class GuessingGame implements Game{
             System.out.println("An error writing the file occurred.");
             e.printStackTrace();
         }
+    }
+    public void preorderArrayFill(LinkedBinaryTreeNode root){
+        // return if the current node is empty
+        if (root == null) {
+            return;
+        }
+
+        // Display the data part of the root (or current node)
+        secondaryTree.add(root);
+
+        // Traverse the left subtree
+        preorderArrayFill((LinkedBinaryTreeNode) root.getRight());
+
+        // Traverse the right subtree
+        preorderArrayFill((LinkedBinaryTreeNode) root.getLeft());
     }
 
     @Override
@@ -97,28 +118,33 @@ public class GuessingGame implements Game{
         while(playing){
             //load tree
             loadTree(fileName);
-            int iterativeI=0;
+            LinkedBinaryTreeNode currNode=tree.get(0);
             while(questioning) {
                 //output question
-                System.out.println(tree.get(iterativeI).getData().toString()+"(y/n)");
+                if(currNode.isLeaf()){
+                    System.out.println("Are you thinking of a "+currNode.getData().toString().substring(2).toLowerCase()+"?(y/n)");
+                } else {
+                    System.out.println(currNode.getData().toString().substring(2)+"(y/n)");
+                }
                 //input answer
                 String response = in.nextLine();
                 //evaluate answer
 
                 //ask question, if useranswer == answer, computer wins
                 // if useranswer != answer, ask the next question
-                if(response.contains("y")){ //no to the left, yes to the right
+                if(response.contains("y")){ // yes to the right
                     //continue down the tree until reach leaf
-                    if(tree.get(iterativeI).isLeaf()){
+                    if(currNode.isLeaf()){
                         System.out.println("I win!");
                         questioning=false;
                     } //keep going
-                } else if (response.contains("n")){//no to the left, yes to the right
-                    //update iterativeI
+                    currNode= (LinkedBinaryTreeNode) currNode.getLeft();
+
+                } else if (response.contains("n")){//no to the left
                     //need to check if this node is a leaf
                     //if leaf, then say "it is a *guess*".
                     //else, then ask question
-                    if(tree.get(iterativeI).isLeaf()){
+                    if(currNode.isLeaf()){
                         System.out.println("You win!");
                         System.out.println("What are you thinking of? ");
                         String newGuess = "G:"+in.nextLine();
@@ -126,13 +152,22 @@ public class GuessingGame implements Game{
                         String newQ = "Q:"+in.nextLine();
                         Question<String> newQuestionObj = new Question<>(newQ);
                         Guess<String> newGuessObj = new Guess<>(newGuess);
-                        tree.add(newQuestionObj);
-                        tree.add(newGuessObj);
+
+                        int indexToReplace = tree.indexOf(currNode);
+
+                        //not sure if i'll need these rn or not
+                        LinkedBinaryTreeNode tempNode = (LinkedBinaryTreeNode) currNode;
+                        currNode=newQuestionObj;
+                        currNode.setLeft(newGuessObj);
+                        currNode.setRight(tempNode);
+
+                        tree.set(indexToReplace, (LinkedBinaryTreeNode) currNode);
+
                         saveTree(fileName);
                         questioning=false;
                     }
+                    currNode= (LinkedBinaryTreeNode) currNode.getRight();
                 }
-                iterativeI++;
             }
 
             System.out.println("Would you like to play again?(y/n)\n"); // make sure this is always the last thing to run
@@ -144,6 +179,7 @@ public class GuessingGame implements Game{
             } else if (playAgain.contains("y")) {
                 playing=true;
                 questioning=true;
+                currNode=null;
             }
         }
     }
