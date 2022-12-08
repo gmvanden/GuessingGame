@@ -60,19 +60,19 @@ public class GuessingGame implements Game{
 
     @Override
     public void saveTree(String filename) { // do this last
-        //compile tree into Array of Strings that can be input into a file
-        //compilation of Strings will be done real time during the game
-
         //PREORDER
         //load those Strings in the proper order into the file
         try {
             FileWriter myWriter = new FileWriter(fileName);
             String fileContents = "";
+            myWriter.flush();
             //traverse through tree and add each .data to a String
             for (LinkedBinaryTreeNode node:tree) {
-                fileContents += node.getData();
+                fileContents = fileContents+ node.getData().toString()+"\n";
             }
+            myWriter.write(fileContents);
             myWriter.close();
+            tree.clear();
             System.out.println("Successfully wrote to the file.");
         } catch (IOException e) {
             System.out.println("An error writing the file occurred.");
@@ -90,7 +90,7 @@ public class GuessingGame implements Game{
         System.out.println("Welcome to the Guessing Game!\nShall we play a game?(y/n)");
         Scanner in = new Scanner(System.in);
         Boolean playing = true;
-        Boolean Questioning = true;
+        Boolean questioning = true;
         if(in.nextLine().contains("n")){ //establishes if playing or not
             playing = false;
         }
@@ -98,10 +98,7 @@ public class GuessingGame implements Game{
             //load tree
             loadTree(fileName);
             int iterativeI=0;
-            while(Questioning) {
-                //establish question using root and branches
-
-
+            while(questioning) {
                 //output question
                 System.out.println(tree.get(iterativeI).getData().toString()+"(y/n)");
                 //input answer
@@ -111,12 +108,10 @@ public class GuessingGame implements Game{
                 //ask question, if useranswer == answer, computer wins
                 // if useranswer != answer, ask the next question
                 if(response.contains("y")){ //no to the left, yes to the right
-                    //update iterativeI -- need to figure out how to up it accurately -- something with checking left and right children
                     //continue down the tree until reach leaf
                     if(tree.get(iterativeI).isLeaf()){
                         System.out.println("I win!");
-                        Questioning=false;
-                        break;
+                        questioning=false;
                     } //keep going
                 } else if (response.contains("n")){//no to the left, yes to the right
                     //update iterativeI
@@ -126,26 +121,29 @@ public class GuessingGame implements Game{
                     if(tree.get(iterativeI).isLeaf()){
                         System.out.println("You win!");
                         System.out.println("What are you thinking of? ");
-                        String newGuess = in.nextLine();
-                        System.out.println("Great! What question defines a "+ newGuess + "?");
-                        String newQ = in.nextLine();
+                        String newGuess = "G:"+in.nextLine();
+                        System.out.println("Great! What question defines a "+ newGuess.substring(2) + "?");
+                        String newQ = "Q:"+in.nextLine();
                         Question<String> newQuestionObj = new Question<>(newQ);
                         Guess<String> newGuessObj = new Guess<>(newGuess);
                         tree.add(newQuestionObj);
                         tree.add(newGuessObj);
-                        Questioning=false;
-                        break;
+                        saveTree(fileName);
+                        questioning=false;
                     }
                 }
                 iterativeI++;
             }
 
-            //save tree
-            System.out.println("would you like to play again?(y/n)\n"); // make sure this is always the last thing to run
-            saveTree(fileName);
-            if(in.nextLine().contains("n")){
+            System.out.println("Would you like to play again?(y/n)\n"); // make sure this is always the last thing to run
+            String playAgain = in.nextLine();
+            if(playAgain.contains("n")){
                 playing=false;
+                questioning=false;
                 break;
+            } else if (playAgain.contains("y")) {
+                playing=true;
+                questioning=true;
             }
         }
     }

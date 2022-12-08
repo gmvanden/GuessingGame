@@ -20,8 +20,8 @@ public class Testing {
         System.out.println(isAnimal.getData());*/
 
         GuessingGame game = new GuessingGame("tree3.data");
-        game.loadTree("tree3.data");
-        System.out.println(game.tree.get(0).getData().toString());
+        //game.loadTree("tree3.data");
+        /*System.out.println(game.tree.get(0).getData().toString());
         System.out.println(game.tree.get(1).getData().toString());
         System.out.println(game.tree.get(2).getData().toString());
         System.out.println(game.tree.get(3).getData().toString());
@@ -29,7 +29,7 @@ public class Testing {
         System.out.println();
         System.out.println(game.tree.get(0).getLeft().getData().toString());
         System.out.println(game.tree.get(1).getLeft().getData().toString());
-        System.out.println(game.tree.get(1).getRight().getData().toString());
-        //game.play();
+        System.out.println(game.tree.get(1).getRight().getData().toString());*/
+        game.play();
     }
 }
