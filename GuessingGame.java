@@ -9,8 +9,8 @@ import java.util.Scanner;
 @SuppressWarnings("ALL")
 public class GuessingGame implements Game{
     ArrayList<LinkedBinaryTreeNode> tree = new ArrayList<>();
-    ArrayList<LinkedBinaryTreeNode> secondaryTree = new ArrayList<>();
-    String fileName = null;
+    ArrayList<LinkedBinaryTreeNode> secondaryTree = new ArrayList<>();    String fileName = null;
+
     @Override
     public BinaryTreeNode<String> loadTree(String filename) { //do this first
         //de-compile strings and use information within them and the order of them to organize them into an array of Nodes
@@ -68,7 +68,7 @@ public class GuessingGame implements Game{
             myWriter.flush();
 
             //start at rootof tree(0), go recursively right, then left
-            preorderArrayFill(tree.get(0));
+            //preorderArrayFill(tree.get(0));
             //tree=secondaryTree;
 
             //traverse through tree and add each .data to a String
@@ -132,7 +132,7 @@ public class GuessingGame implements Game{
 
                 //ask question, if useranswer == answer, computer wins
                 // if useranswer != answer, ask the next question
-                if(response.contains("y")){ // yes to the right
+                if(response.contains("y")){ // yes to the LEFT
                     //continue down the tree until reach leaf
                     if(currNode.isLeaf()){
                         System.out.println("I win!");
@@ -140,7 +140,7 @@ public class GuessingGame implements Game{
                     } //keep going
                     currNode= (LinkedBinaryTreeNode) currNode.getLeft();
 
-                } else if (response.contains("n")){//no to the left
+                } else if (response.contains("n")){//no to the RIGHT
                     //need to check if this node is a leaf
                     //if leaf, then say "it is a *guess*".
                     //else, then ask question
@@ -155,13 +155,20 @@ public class GuessingGame implements Game{
 
                         int indexToReplace = tree.indexOf(currNode);
 
-                        //not sure if i'll need these rn or not
+                        //not sure if i'll need these rn or not lol
+                        //look at parent of elephant and set it right
                         LinkedBinaryTreeNode tempNode = (LinkedBinaryTreeNode) currNode;
+                        LinkedBinaryTreeNode parentNode = (LinkedBinaryTreeNode) currNode.getParent();
+                        int indexParentReplace = tree.indexOf(parentNode);
                         currNode=newQuestionObj;
-                        currNode.setLeft(newGuessObj);
+                        parentNode.setRight(currNode);
                         currNode.setRight(tempNode);
+                        currNode.setLeft(currNode);
 
-                        tree.set(indexToReplace, (LinkedBinaryTreeNode) currNode);
+                        tree.set(indexToReplace,currNode);
+                        tree.set(indexParentReplace,parentNode);
+                        System.out.println(tree.get(indexToReplace).getLeft().getData());
+                        System.out.println(tree.get(indexToReplace).getRight().getData());
 
                         saveTree(fileName);
                         questioning=false;

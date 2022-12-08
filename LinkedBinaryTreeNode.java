@@ -3,6 +3,8 @@
  * @Date 12/7/2022
  * This class builds the dataset of the Guessing Game linkedBinaryTree
  */
+import jdk.incubator.vector.VectorOperators;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -41,7 +43,7 @@ public class LinkedBinaryTreeNode<E> implements BinaryTreeNode<E>{
     }
     @Override
     public boolean isLeaf() {
-        if (leftNode == null || rightNode == null) {
+        if (leftNode == null && rightNode == null) {
             return true;
         }
         return false;
@@ -167,14 +169,11 @@ public class LinkedBinaryTreeNode<E> implements BinaryTreeNode<E>{
     @Override
     public void traversePreorder(Visitor visitor) {
         visitor.visit(rootNode);
-        if (rootNode.getRight() != null){
-            traversePreorder(visitor,rootNode.getRight());
-        }
-        if (rootNode.getLeft() != null){
-            traversePreorder(visitor, rootNode.getLeft());
-        }
+        traversePreorder(visitor,rootNode);
     }
     public void traversePreorder(Visitor visitor, BinaryTreeNode curNode) {
+        if(curNode==null){return;}
+        visitor.visit(curNode);
         if (rootNode.getRight() != null){
             traversePreorder(visitor,curNode.getRight());
         }
@@ -218,15 +217,5 @@ public class LinkedBinaryTreeNode<E> implements BinaryTreeNode<E>{
         if (curNode.getRight() != null){
             traverseInorder(visitor,curNode.getRight());
         }
-    }
-    public int countNode(BinaryTreeNode root){
-
-        //base case
-        if(root==null)
-            return 0;
-
-        //recursive call to left child and right child and
-        // add the result of these with 1 ( 1 for counting the root)
-        return 1 + countNode(root.getLeft()) + countNode(root.getRight());
     }
 }
