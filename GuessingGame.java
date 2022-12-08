@@ -5,10 +5,16 @@
  */
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+class Index {
+
+    int index = 0;
+}
 @SuppressWarnings("ALL")
 public class GuessingGame implements Game{
-    ArrayList<LinkedBinaryTreeNode> tree = new ArrayList<>();
+    ArrayList<String> tree = new ArrayList<>();
+    Index index = new Index();
     ArrayList<LinkedBinaryTreeNode> secondaryTree = new ArrayList<>();
     String fileName = null;
     @Override
@@ -17,46 +23,43 @@ public class GuessingGame implements Game{
         try{
             File file = new File(filename);
             Scanner fIn = new Scanner(file);
-            int i = 0;
-            Boolean isFirst = true;
             while(fIn.hasNext()){
                 String Line = fIn.nextLine();
-                LinkedBinaryTreeNode<String> node = null;
-                if(Line.charAt(0)=='Q'){
-                    node = new Question<>(Line);
-                }
-                if(Line.charAt(0)=='G'){
-                    node = new Guess<>(Line);
-                }
-                tree.add(node);
-                if(isFirst == false){
-                    node.setParent(tree.get(i));
-                    if(Line.charAt(0) == 'G'){
-                        if (tree.get(i).rightNode == null) {
-                            tree.get(i).setRight(node);
-                        } else {
-                            tree.get(i).setLeft(node);
-                            if(!(tree.get(i).getParent() == null)){
-                                i--;
-                            }
-                        }
-                    }else{
-                        tree.get(i).setRight(node);
-                        i++;
-                    }
-
-                }
-                isFirst = false;
-
+                tree.add(Line);
             }
-
-
         }catch (FileNotFoundException e){
             e.printStackTrace();
             System.out.println("file name incorrect or file not found");
         }
 
-        return null; // return root node
+        return constructTree(tree, tree.size());
+    }
+    LinkedBinaryTreeNode constructTreeUtil(List<String> pre, Index preIndex, int low, int high, int size)
+    {
+        if (preIndex.index >= size || low > high) {
+            return null;
+        }
+        LinkedBinaryTreeNode root = new Question(pre.get(preIndex.index));
+        preIndex.index = preIndex.index + 1;
+
+        if (low == high) {
+            return root;
+        }
+
+        int i;
+        for (i = low; i <= high; ++i) {
+            if (pre.get(i).compareTo((String) root.data) > 0) {
+                break;
+            }
+        }
+        root.setLeft(constructTreeUtil(pre, preIndex, preIndex.index, i - 1, size));
+        root.setRight(constructTreeUtil(pre, preIndex, i, high, size));
+        return root;
+    }
+    LinkedBinaryTreeNode constructTree(List<String> pre, int size)
+    {
+        return constructTreeUtil(pre, index, 0, size - 1,
+                size);
     }
     @Override
     public void saveTree(String filename) { // do this last
@@ -68,13 +71,13 @@ public class GuessingGame implements Game{
             myWriter.flush();
 
             //start at rootof tree(0), go recursively right, then left
-            preorderArrayFill(tree.get(0));
+            //preorderArrayFill(tree.get(0));
             //tree=secondaryTree;
 
             //traverse through tree and add each .data to a String
-            for (LinkedBinaryTreeNode node:tree) {
-                fileContents = fileContents+ node.getData().toString()+"\n";
-            }
+            //for (LinkedBinaryTreeNode node:tree) {
+             //   fileContents = fileContents+ node.getData().toString()+"\n";
+            //}
 
             myWriter.write(fileContents);
             myWriter.close();
@@ -103,7 +106,7 @@ public class GuessingGame implements Game{
 
     @Override
     public BinaryTreeNode<String> getRoot() {
-        return tree.get(0);
+        return null;
     } //do this second
 
     @Override
@@ -118,7 +121,7 @@ public class GuessingGame implements Game{
         while(playing){
             //load tree
             loadTree(fileName);
-            LinkedBinaryTreeNode currNode=tree.get(0);
+            LinkedBinaryTreeNode currNode= null;
             while(questioning) {
                 //output question
                 if(currNode.isLeaf()){
@@ -161,7 +164,7 @@ public class GuessingGame implements Game{
                         currNode.setLeft(newGuessObj);
                         currNode.setRight(tempNode);
 
-                        tree.set(indexToReplace, (LinkedBinaryTreeNode) currNode);
+                        //tree.set(indexToReplace, (LinkedBinaryTreeNode) currNode);
 
                         saveTree(fileName);
                         questioning=false;

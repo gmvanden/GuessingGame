@@ -1,5 +1,3 @@
-import java.util.Objects;
-
 public class Testing {
 
     public static void main(String[] args) {
@@ -19,17 +17,25 @@ public class Testing {
         System.out.println(cow.getData());
         System.out.println(isAnimal.getData());*/
 
-        GuessingGame game = new GuessingGame("tree3.data");
-        //game.loadTree("tree3.data");
-        /*System.out.println(game.tree.get(0).getData().toString());
-        System.out.println(game.tree.get(1).getData().toString());
-        System.out.println(game.tree.get(2).getData().toString());
-        System.out.println(game.tree.get(3).getData().toString());
-        System.out.println(game.tree.get(4).getData().toString());
-        System.out.println();
-        System.out.println(game.tree.get(0).getLeft().getData().toString());
-        System.out.println(game.tree.get(1).getLeft().getData().toString());
-        System.out.println(game.tree.get(1).getRight().getData().toString());*/
-        game.play();
+        GuessingGame game = new GuessingGame("tree4.data");
+        BinaryTreeNode<String> root = game.loadTree("tree4.data");
+        printPreorder(root);
+        //game.play();
     }
+    public static void printPreorder(BinaryTreeNode node)
+    {
+        if (node == null)
+            return;
+
+        /* first print data of node */
+        System.out.print(node.getData().toString() + "\n");
+
+        /* then recur on left subtree */
+        printPreorder(node.getLeft());
+
+        /* now recur on right subtree */
+        printPreorder(node.getRight());
+    }
+
+    // Wrappers over above recursive functions
 }
