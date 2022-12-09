@@ -24,6 +24,6 @@ public class TreeDisplay extends JFrame {
 		if ( args.length == 0 ) {
 			throw new RuntimeException("You need to pass full filename of the tree file to load as a command line argument.");
 		}
-		TreeDisplay treeDisplay = new TreeDisplay ( args[0] );
+		TreeDisplay treeDisplay = new TreeDisplay (args[0]);
 	}
 }
